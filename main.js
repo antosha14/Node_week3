@@ -1,5 +1,5 @@
 import { createServer } from 'node:http'
-import { getAllUsers, getUserByID } from './controller/controller.js'
+import { getAllUsers, getUserByID, createNewUser } from './controller/controller.js'
 
 const PORT = process.env.PORT || 5000
 const data = {
@@ -15,7 +15,7 @@ const server = createServer((request, response) => {
         let id = request.url.split('/')[3]
         getUserByID(request, response, id)
     } else if (request.url === '/api/users' && request.method === 'POST') {
-
+        createNewUser(request, response)
     } else if (request.url === 'api/users/*' && request.method === 'PUT') {
 
     } else if (request.url === 'api/users/*' && request.method === 'DELETE') {

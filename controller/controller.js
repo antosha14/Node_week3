@@ -1,6 +1,5 @@
 // Контроллеры работают с роутами
-import { userDatabase } from "../data/database.js";
-import { findAllUsers, findUserByID } from "../models/model.js";
+import { findAllUsers, findUserByID, userAdder, userDeleter } from "../models/model.js";
 
 export const getAllUsers = async function (request, response) {
     try {
@@ -28,14 +27,33 @@ export const getUserByID = async function (request, response, id) {
     } catch (error) {
         response.writeHead(500, { 'content-type': 'application/json' })
         response.end(JSON.stringify('Internal server error'))
-        console.log(error)
     }
 }
 
-export const createNewUser = async function (request, resolve, userData) {
-    try {
+export const createNewUser = async function (request, response) {
+    let userAddingResault = await userAdder(request)
+    if (userAddingResault === 'Inputed params are not valid') {
+        response.writeHead(400, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userAddingResault))
+    } else if (userAddingResault === 'Internal server error') {
+        response.writeHead(500, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userAddingResault))
+    } else if (typeof userAddingResault === 'object') {
+        response.writeHead(201, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userAddingResault))
+    }
+}
 
-    } catch {
-
+export const deleteUser = async function (request, response) {
+    let userDeleterResault = await userDeleter(request)
+    if (userDeleterResault === 'Inputed params are not valid') {
+        response.writeHead(400, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userDeleterResault))
+    } else if (userDeleterResault === 'Internal server error') {
+        response.writeHead(500, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userDeleterResault))
+    } else if (typeof userDeleterResault === 'object') {
+        response.writeHead(201, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userDeleterResault))
     }
 }
