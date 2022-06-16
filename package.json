@@ -1,0 +1,20 @@
+{
+  "name": "week-3",
+  "version": "1.0.0",
+  "description": "Rs_School week 3",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon main.js"
+  },
+  "repository": {
+    "type": "module",
+    "url": "git+https://github.com/antosha14/Node_week3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}
