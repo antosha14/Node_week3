@@ -44,16 +44,37 @@ export const createNewUser = async function (request, response) {
     }
 }
 
-export const deleteUser = async function (request, response) {
-    let userDeleterResault = await userDeleter(request)
-    if (userDeleterResault === 'Inputed params are not valid') {
+export const deleteUser = async function (request, response, id) {
+    let userDeleterResault = await userDeleter(id)
+    if (userDeleterResault === 'Invalid ID') {
         response.writeHead(400, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userDeleterResault))
+    } else if (userDeleterResault === 'User does not exist') {
+        response.writeHead(404, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userDeleterResault))
+    } else if (userDeleterResault === 'User was found and deleted') {
+        response.writeHead(204, { 'content-type': 'application/json' })
         response.end(JSON.stringify(userDeleterResault))
     } else if (userDeleterResault === 'Internal server error') {
         response.writeHead(500, { 'content-type': 'application/json' })
         response.end(JSON.stringify(userDeleterResault))
-    } else if (typeof userDeleterResault === 'object') {
+    }
+}
+
+export const changeUser = async function (request, response, id) {
+    let userChangeResault = await userChanger(request, id)
+    if (userChangeResault === 'User ID is invalid') {
+        response.writeHead(400, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userChangeResault))
+    } else if (userChangeResault === 'Internal server error') {
+        response.writeHead(500, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userChangeResault))
+    }
+    else if (userChangeResault === 'User does not exist') {
+        response.writeHead(404, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(userChangeResault))
+    } else if (userChangeResault === 'User updated') {
         response.writeHead(201, { 'content-type': 'application/json' })
-        response.end(JSON.stringify(userDeleterResault))
+        response.end(JSON.stringify(userChangeResault))
     }
 }

@@ -3,13 +3,17 @@ import { readFile } from 'fs/promises'
 import { userDatabaseUpdater } from '../utils.js'
 //NVC Pattern 
 
-
-let userDatabase = JSON.parse(
-    await readFile(
-        new URL('../data/database.json', import.meta.url),
-        { encoding: 'utf-8' }
+let userDatabase = ''
+try {
+    userDatabase = JSON.parse(
+        await readFile(
+            new URL('../data/database.json', import.meta.url),
+            { encoding: 'utf-8' }
+        )
     )
-)
+} catch {
+
+}
 
 export const findAllUsers = function () {
     return new Promise((resolve, reject) => {
@@ -78,11 +82,9 @@ const userValidityChecker = function (request) {
 export const userAdder = async function (request) {
     let userValidityCheckResault = await userValidityChecker(request)
     return new Promise((resolve, reject) => {
-        if (userValidityCheckResault === 'Inputed params are not valid') {
+        if (typeof userValidityCheckResault !== 'object') {
             resolve(userValidityCheckResault)
-        } else if (userValidityCheckResault === 'Internal server error') {
-            resolve(userValidityCheckResault)
-        } else if (typeof userValidityCheckResault === 'object') {
+        } else {
             // Странно в туториале обновляют сразу весь файл, это не совсем валидно. Если будет время РЕФАКТОРНУТЬ В ДОПОЛНЕНИЯ
             userDatabase.push(userValidityCheckResault)
             console.log(userDatabase)
@@ -93,7 +95,25 @@ export const userAdder = async function (request) {
 }
 
 //Блин мне не обязательно ретернить промисы потому что асинк функция сама по себе ретернит промис
-export const userDeleter = async function (request) {
+export const userDeleter = async function (id) {
+    let validityCheckForDelition = await findUserByID(id)
+    return new Promise((resolve, reject) => {
+        try {
+            if (typeof validityCheckForDelition === 'object') {
+                userDatabase = userDatabase.filter((user) => user.id !== id)
+                userDatabaseUpdater(userDatabase)
+                resolve('User was found and deleted')
+            } else {
+                resolve(validityCheckForDelition)
+            }
+        } catch {
+            resolve('Internal server error')
+        }
+    })
+}
+
+export const userChanger = async function (request, id) {
+    let validityCheckForChange = await findUserByID(id)
     return new Promise((resolve, reject) => {
 
     })

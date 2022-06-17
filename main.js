@@ -1,5 +1,5 @@
 import { createServer } from 'node:http'
-import { getAllUsers, getUserByID, createNewUser } from './controller/controller.js'
+import { getAllUsers, getUserByID, createNewUser, changeUser, deleteUser } from './controller/controller.js'
 
 const PORT = process.env.PORT || 5000
 const data = {
@@ -16,10 +16,12 @@ const server = createServer((request, response) => {
         getUserByID(request, response, id)
     } else if (request.url === '/api/users' && request.method === 'POST') {
         createNewUser(request, response)
-    } else if (request.url === 'api/users/*' && request.method === 'PUT') {
-
-    } else if (request.url === 'api/users/*' && request.method === 'DELETE') {
-
+    } else if (request.url.match(/\/api\/users\/.*/g) && request.method === 'PUT') {
+        let id = request.url.split('/')[3]
+        changeUser(request, response, id)
+    } else if (request.url.match(/\/api\/users\/.*/g) && request.method === 'DELETE') {
+        let id = request.url.split('/')[3]
+        deleteUser(request, response, id)
     }
     else {
         response.writeHead(404, { 'Content-Type': 'application/json' })
