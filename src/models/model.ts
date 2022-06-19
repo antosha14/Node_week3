@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises'
 import { userDatabaseUpdater } from '../utils.js'
 //NVC Pattern 
 
-let userDatabase: any = ''
+export let userDatabase: any = ''
 try {
     userDatabase = JSON.parse(
         await readFile(

@@ -25,9 +25,8 @@ const server = createServer((request, response) => {
     }
     else {
         response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end('Роут не найден');
+        response.end(JSON.stringify({ "message": "URL not supported" }));
     }
     //response.writeHead(200, {'Content-Type':'text/html'})
     response.statusCode = 200;
-});
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).listen(PORT, () => { console.log(`Server is running on port ${PORT}`); });

@@ -2,7 +2,7 @@ import { v4 as uuidv4, validate } from 'uuid';
 import { readFile } from 'fs/promises';
 import { userDatabaseUpdater } from '../utils.js';
 //NVC Pattern 
-let userDatabase = '';
+export let userDatabase = '';
 try {
     userDatabase = JSON.parse(await readFile(new URL('../data/database.json', import.meta.url), { encoding: 'utf-8' }));
 }
@@ -15,12 +15,17 @@ export const findAllUsers = function () {
 };
 export const findUserByID = function (id) {
     return new Promise((resolve, reject) => {
-        let searchedUser = userDatabase.find((user) => user.id === id);
-        if (!validate(id)) {
-            resolve('Invalid ID');
-        }
-        else if (searchedUser) {
-            resolve(searchedUser);
+        if (userDatabase.length > 0) {
+            let searchedUser = userDatabase.find((user) => user.id === id);
+            if (!validate(id)) {
+                resolve('Invalid ID');
+            }
+            else if (searchedUser) {
+                resolve(searchedUser);
+            }
+            else {
+                resolve('User does not exist');
+            }
         }
         else {
             resolve('User does not exist');
