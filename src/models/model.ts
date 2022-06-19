@@ -23,14 +23,18 @@ export const findAllUsers = function () {
 
 export const findUserByID = function (id: string) {
     return new Promise((resolve, reject) => {
-        let searchedUser = userDatabase.find((user: any) => user.id === id)
-        if (!validate(id)) {
-            resolve('Invalid ID')
-        }
-        else if (searchedUser) {
-            resolve(searchedUser)
-        }
-        else {
+        if (userDatabase.length > 0) {
+            let searchedUser = userDatabase.find((user: any) => user.id === id)
+            if (!validate(id)) {
+                resolve('Invalid ID')
+            }
+            else if (searchedUser) {
+                resolve(searchedUser)
+            }
+            else {
+                resolve('User does not exist')
+            }
+        } else {
             resolve('User does not exist')
         }
     })
