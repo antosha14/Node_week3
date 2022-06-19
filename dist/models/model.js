@@ -129,7 +129,6 @@ export const userChanger = async function (request, id) {
                         };
                         userDatabase = userDatabase.filter((user) => user.id !== validityCheckForChange.id);
                         userDatabase.push(updatedUser);
-                        console.log(userDatabase);
                         userDatabaseUpdater(userDatabase);
                         resolve(updatedUser);
                     }
