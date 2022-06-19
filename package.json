@@ -5,8 +5,9 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "start": "node main.js",
-    "dev": "nodemon main.js"
+    "start:prod": "node ./dist/main.js",
+    "start:dev": "nodemon ./dist/main.js",
+    "build": "tsc -p tsconfig.json"
   },
   "repository": {
     "type": "module",
@@ -15,6 +16,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
   }
 }
